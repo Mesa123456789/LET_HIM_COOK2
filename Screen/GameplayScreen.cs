@@ -73,11 +73,11 @@ namespace LET_HIM_COOK.Screen
             //***new
             milk = game.Content.Load<Texture2D>("ingre/milk");
             popup = game.Content.Load<Texture2D>("popup");
-            pinkslime = game.Content.Load<Texture2D>("pinksmaile");
+            
             hippo = game.Content.Load<Texture2D>("hippo");
             chicken = game.Content.Load<Texture2D>("chicken");
             pig = game.Content.Load<Texture2D>("pig");
-            pork = game.Content.Load<Texture2D>("ingre/pork");
+            
             rat = game.Content.Load<Texture2D>("rat");
             slime = game.Content.Load<Texture2D>("slime");
             icebear = game.Content.Load<Texture2D>("icebear");
@@ -134,7 +134,7 @@ namespace LET_HIM_COOK.Screen
             pinkdimon = game.Content.Load<Texture2D>("ingre/pinkdimon");
             seafood = game.Content.Load<Texture2D>("ingre/seafood");
             shumai = game.Content.Load<Texture2D>("ingre/shumai");
-            smileeggs = game.Content.Load<Texture2D>("ingre/smileeggs");
+            
             stone = game.Content.Load<Texture2D>("ingre/stone");
             tempura = game.Content.Load<Texture2D>("ingre/tempura");
             purpledimon = game.Content.Load<Texture2D>("ingre/purpledimon");
@@ -385,34 +385,6 @@ namespace LET_HIM_COOK.Screen
             {
                 RestauarntScreen.QuestList[i].Menuname = spawn[i];
             }
-
-            if (RestauarntScreen.QuestList[23].Menuname == true && isSpawn[23] == false)
-            {
-                int countEnemy = 3;
-                for (int i = 0; i < countEnemy; i++)
-                {
-                    Game1.enemyList.Add(new Enemy("pinksmaile", pinkslime, new Food[2] { new Food("pork", pork, new Rectangle(0, 0, 32, 32), true), new Food("smileeggs", smileeggs, new Rectangle(0, 0, 32, 32), true) }, 5, new RectangleF(400 + (i * 32), 300 + (i * 32), 64, 64)));
-                }
-                isSpawn[23] = true;
-            }
-            if (RestauarntScreen.QuestList[21].Menuname == true && isSpawn[21] == false)
-            {
-                int countEnemy = 3;
-                for (int i = 0; i < countEnemy; i++)
-                {
-                    Game1.enemyList.Add(new Enemy("pinksmaile", pinkslime, new Food[2] { new Food("pork", pork, new Rectangle(0, 0, 32, 32), true), new Food("smileeggs", smileeggs, new Rectangle(0, 0, 32, 32), true) }, 5, new RectangleF(400 + (i * 32), 300 + (i * 32), 64, 64)));
-                }
-                isSpawn[21] = true;
-            }
-            if (RestauarntScreen.QuestList[1].Menuname == true && isSpawn[1] == false)
-            {
-                int countEnemy = 2;
-                for (int i = 0; i < countEnemy; i++)
-                {
-                    Game1.enemyList.Add(new Enemy("sheep", sheep, new Food[2] { new Food("sheepmeat", sheepmeat, new Rectangle(0, 0, 32, 32), false), new Food("wipcream", wipcream, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(400, 300, 64, 64)));
-                }
-                isSpawn[1] = true;
-            }
             if (RestauarntScreen.QuestList[3].Menuname == true && isSpawn[3] == false)
             {
                 int countEnemy = 1;
@@ -454,7 +426,7 @@ namespace LET_HIM_COOK.Screen
                 int countEnemy = 1;
                 for (int i = 0; i < countEnemy; i++)
                 {
-                    Game1.enemyList.Add(new Enemy("chicken", chicken, new Food[1] { new Food("chickenmeat", chickenmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(400, 300, 64, 64)));
+                    Game1.enemyList.Add(new Enemy("chicken", chicken, new Food[1] { new Food("chicken", chickenmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(400, 300, 64, 64)));
                 }
                 isSpawn[10] = true;
             }

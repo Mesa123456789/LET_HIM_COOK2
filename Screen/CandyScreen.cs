@@ -35,11 +35,18 @@ namespace LET_HIM_COOK.Screen
         RectangleF Bounds = new RectangleF(new Vector2(1500, 400), new Vector2(40, 60)); //new Vector2(1500, 400)
         public Texture2D book;
         Texture2D ui;
-        public Texture2D uiHeart;
+        public Texture2D uiHeart, pinkslime, smileeggs, pork;
 
         //Tile_FrontRestaurant Tile_Wall_Frontres
         public CandyScreen(Game1 game, EventHandler theScreenEvent) : base(theScreenEvent)
         {
+            pinkslime = game.Content.Load<Texture2D>("pinksmaile");
+            smileeggs = game.Content.Load<Texture2D>("ingre/smileeggs");
+            pork = game.Content.Load<Texture2D>("ingre/pork");
+
+
+
+
             game._cameraPosition = new Vector2(800, 100);
             popup = game.Content.Load<Texture2D>("popup");
             var viewportadapter = new BoxingViewportAdapter(game.Window, game.GraphicsDevice, 800, 450);
@@ -92,6 +99,9 @@ namespace LET_HIM_COOK.Screen
         RectangleF mouseRec;
         RectangleF bookRec;
         bool OnCursor1;
+        bool[] spawn = new bool[27];
+        Food[] food = new Food[5];
+        bool[] isSpawn = new bool[27];
         public override void Update(GameTime theTime)
         {
 
@@ -130,6 +140,33 @@ namespace LET_HIM_COOK.Screen
             Game1._camera.LookAt(game._bgPosition + game._cameraPosition);//******//
             player.Update(theTime);
             base.Update(theTime);
+
+            for (int i = 0; i < RestauarntScreen.QuestList.Count; i++)
+            {
+                RestauarntScreen.QuestList[i].Menuname = spawn[i];
+            }
+            if (RestauarntScreen.QuestList[23].Menuname == true && isSpawn[23] == false)
+            {
+                int countEnemy = 3;
+                for (int i = 0; i < countEnemy; i++)
+                {
+                    Game1.enemyList.Add(new Enemy("pinksmaile", pinkslime, new Food[2] { new Food("pork", pork, new Rectangle(0, 0, 32, 32), true), new Food("smileeggs", smileeggs, new Rectangle(0, 0, 32, 32), true) }, 5, new RectangleF(400 + (i * 32), 300 + (i * 32), 64, 64)));
+                }
+                isSpawn[23] = true;
+            }
+            if (RestauarntScreen.QuestList[21].Menuname == true && isSpawn[21] == false)
+            {
+                int countEnemy = 3;
+                for (int i = 0; i < countEnemy; i++)
+                {
+                    Game1.enemyList.Add(new Enemy("pinksmaile", pinkslime, new Food[2] { new Food("pork", pork, new Rectangle(0, 0, 32, 32), true), new Food("smileeggs", smileeggs, new Rectangle(0, 0, 32, 32), true) }, 5, new RectangleF(400 + (i * 32), 300 + (i * 32), 64, 64)));
+                }
+                isSpawn[21] = true;
+            }
+
+
+
+
         }
 
         public override void Draw(SpriteBatch _spriteBatch)

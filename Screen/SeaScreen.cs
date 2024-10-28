@@ -42,7 +42,7 @@ namespace LET_HIM_COOK.Screen
         Texture2D salmonmeat, redfishmeat, whalemeat, greenshimpmeat, pinkfishmeat, sharkmeat, shimpmeat, unimeat;
         Texture2D dowfin, normalfish, octopus, salmon, shark, shimai, whale, sharkear, foodTexture,crabmeat, castusWorld;
         //Collecting
-       
+        public static List<Enemy> enemyList = new();
         public static List<Fish> BigFishList = new();
         public static List<Fish> SmallFishList = new();
         private Random _random;
@@ -63,7 +63,7 @@ namespace LET_HIM_COOK.Screen
             //**ingre
             salmonmeat = game.Content.Load<Texture2D>("ingre/salmonmeat");
             redfishmeat = game.Content.Load<Texture2D>("ingre/redfishmeat");
-            whalemeat = game.Content.Load<Texture2D>("ingre/whalemeat");
+            whalemeat = game.Content.Load<Texture2D>("ingre/whaleear");
             greenshimpmeat = game.Content.Load<Texture2D>("ingre/greenshimpmeat");
             pinkfishmeat = game.Content.Load<Texture2D>("ingre/pinkfishmeat");
             sharkmeat = game.Content.Load<Texture2D>("ingre/sharkmeat");
@@ -82,15 +82,15 @@ namespace LET_HIM_COOK.Screen
             castusWorld = game.Content.Load<Texture2D>("Tree/castusWorld");
             //Game1.foodList.Add(new Food("castusWorld", castusWorld, castusWorld, new Vector2(300, 800)));
             
-            //Game1.enemyList.Add(new Enemy("fish", _fish, new Food[1] { new Food("greenshimpmeat", greenshimpmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(300, 300, 64, 64)));
+            enemyList.Add(new Enemy("fish", _fish, new Food[1] { new Food("greenshimpmeat", greenshimpmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(700, 300, 64, 64)));
 
             SmallFishList.Add(new Fish(15, "redfish", _fish, redfishmeat, fishPos));
             BigFishList.Add(new Fish(16, "salmon", salmon, salmonmeat, fishPos));
             BigFishList.Add(new Fish(17, "whalemeat", whale, whalemeat, fishPos));
             BigFishList.Add(new Fish(19, "pinkfishmeat", dowfin, pinkfishmeat, fishPos));
             BigFishList.Add(new Fish(20, "sharkmeat", shark, sharkmeat, fishPos));
-            BigFishList.Add(new Fish(20, "sharkmeat", shark, sharkear, fishPos));
-            SmallFishList.Add(new Fish(21, "shimpmeat", _fish, greenshimpmeat, fishPos));
+            BigFishList.Add(new Fish(20, "sharkear", shark, sharkear, fishPos));
+            SmallFishList.Add(new Fish(21, "greenshimpmeat", _fish, greenshimpmeat, fishPos));
             //SmallFishList.Add(new Fish(22, "unimeat", shimai, unimeat, fishPos));
             //***new
             SmallFishList.Add(new Fish(15, "shimai", shimai, shimai, fishPos));
@@ -233,17 +233,17 @@ namespace LET_HIM_COOK.Screen
                 }
 
             }
-            for (int i = Game1.enemyList.Count - 1; i >= 0; i--)
+            for (int i = enemyList.Count - 1; i >= 0; i--)
             {
-                Game1.enemyList[i].Follow(player);
+                enemyList[i].Follow(player);
             }
-            for (int i = Game1.enemyList.Count - 1; i >= 0; i--)
+            for (int i = enemyList.Count - 1; i >= 0; i--)
             {
-                Game1.enemyList[i].Update(theTime);
+                enemyList[i].Update(theTime);
             }
-            for (int i = Game1.enemyList.Count - 1; i >= 0; i--)
+            for (int i = enemyList.Count - 1; i >= 0; i--)
             {
-                player.Attack(Game1.enemyList[i]);
+                player.Attack(enemyList[i]);
             }
             for (int i = 0; i < Game1.BagList.Count; i++)
             {
@@ -298,11 +298,11 @@ namespace LET_HIM_COOK.Screen
                     Game1.foodList[i].Draw(_spriteBatch);
                 }
             }
-            foreach (Enemy enemy in Game1.enemyList)
+            foreach (Enemy enemy in enemyList)
             {
-                for (int i = 3; i < Game1.enemyList.Count; i++)
+                for (int i = 0; i < enemyList.Count; i++)
                 {
-                    Game1.enemyList[i].Draw(_spriteBatch);
+                    enemyList[i].Draw(_spriteBatch);
                 }
             }
             foreach (Fish fish in BigFishList)

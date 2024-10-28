@@ -490,9 +490,7 @@ namespace LET_HIM_COOK
             }
             if (GameplayScreen.openQuest == true)
             {
-                RestauarntScreen.QuestList[GameplayScreen.getQuest].QuestRec = qBox1;
-                RestauarntScreen.QuestList[GameplayScreen.getQuest2].QuestRec = qBox2;
-                RestauarntScreen.QuestList[GameplayScreen.getQuest3].QuestRec = qBox3;
+                
                 count++;
                 if (count > 20 && havQ == false)
                 {
@@ -519,6 +517,9 @@ namespace LET_HIM_COOK
                         Console.WriteLine(RestauarntScreen.QuestList[i].Menuname + "" + i);
                         havQ = true;
                     }
+                    RestauarntScreen.QuestList[GameplayScreen.getQuest].QuestRec = qBox1;
+                    RestauarntScreen.QuestList[GameplayScreen.getQuest2].QuestRec = qBox2;
+                    RestauarntScreen.QuestList[GameplayScreen.getQuest3].QuestRec = qBox3;
                 }
             }
             msPre = ms;
@@ -556,6 +557,10 @@ namespace LET_HIM_COOK
                     {
                         _spriteBatch.Draw(popup, new Vector2(635, 170), Color.White);
                         _spriteBatch.Draw(BagList[i].foodTexBag, new Rectangle(653, 180, 32,32), new Rectangle(0,0,32,32), Color.White);
+                        if (BagList[i].Two == true)
+                        {
+                            _spriteBatch.Draw(hippomeat, new Rectangle(653 + 40, 180, 32, 32), new Rectangle(0, 0, 32, 32), Color.White);
+                        }
                         if (BagList[i].Two == true)
                         {
                             _spriteBatch.Draw(hippomeat, new Rectangle(653 + 40, 180, 32, 32), new Rectangle(0, 0, 32, 32), Color.White);
