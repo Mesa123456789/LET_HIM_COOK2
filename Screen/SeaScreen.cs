@@ -40,7 +40,9 @@ namespace LET_HIM_COOK.Screen
         RectangleF Bounds = new RectangleF(new Vector2(780, 64), new Vector2(40, 60));
         Texture2D _fish, popup, popup2, gotfish, fishing;
         Texture2D salmonmeat, redfishmeat, whalemeat, greenshimpmeat, pinkfishmeat, sharkmeat, shimpmeat, unimeat;
-        Texture2D dowfin, normalfish, octopus, salmon, shark, shimai, whale, sharkear, foodTexture,crabmeat;
+        Texture2D dowfin, normalfish, octopus, salmon, shark, shimai, whale, sharkear, foodTexture,crabmeat, castusWorld;
+        //Collecting
+       
         public static List<Fish> BigFishList = new();
         public static List<Fish> SmallFishList = new();
         private Random _random;
@@ -75,11 +77,12 @@ namespace LET_HIM_COOK.Screen
             shark = game.Content.Load<Texture2D>("_fish/shark");
             shimai = game.Content.Load<Texture2D>("_fish/shimai");
             whale = game.Content.Load<Texture2D>("_fish/whale");
-            crabmeat = game.Content.Load<Texture2D>("ingre/crabmeat");
-            foodTexture = game.Content.Load<Texture2D>("crab");
+            
 
-            Game1.enemyList.Add(new Enemy("crab", foodTexture, new Food[1] { new Food("crabmeat", crabmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(300, 300, 64, 64)));
-            Game1.enemyList.Add(new Enemy("fish", _fish, new Food[1] { new Food("greenshimpmeat", greenshimpmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(300, 300, 64, 64)));
+            castusWorld = game.Content.Load<Texture2D>("Tree/castusWorld");
+            //Game1.foodList.Add(new Food("castusWorld", castusWorld, castusWorld, new Vector2(300, 800)));
+            
+            //Game1.enemyList.Add(new Enemy("fish", _fish, new Food[1] { new Food("greenshimpmeat", greenshimpmeat, new Rectangle(0, 0, 32, 32), false) }, 5, new RectangleF(300, 300, 64, 64)));
 
             SmallFishList.Add(new Fish(15, "redfish", _fish, redfishmeat, fishPos));
             BigFishList.Add(new Fish(16, "salmon", salmon, salmonmeat, fishPos));
@@ -88,21 +91,12 @@ namespace LET_HIM_COOK.Screen
             BigFishList.Add(new Fish(20, "sharkmeat", shark, sharkmeat, fishPos));
             BigFishList.Add(new Fish(20, "sharkmeat", shark, sharkear, fishPos));
             SmallFishList.Add(new Fish(21, "shimpmeat", _fish, greenshimpmeat, fishPos));
-            SmallFishList.Add(new Fish(22, "unimeat", shimai, unimeat, fishPos));
+            //SmallFishList.Add(new Fish(22, "unimeat", shimai, unimeat, fishPos));
             //***new
             SmallFishList.Add(new Fish(15, "shimai", shimai, shimai, fishPos));
             BigFishList.Add(new Fish(15, "octopus", octopus, octopus, fishPos));
-            ///**สุตรโกง
-            //Game1.BagList.Add(new Fish(15, "redfish", salmon, redfishmeat, fishPos));
-            //Game1.BagList.Add(new Fish(16, "salmon", salmon, salmonmeat, fishPos));
-            //Game1.BagList.Add(new Fish(17, "whalemeat", whale, whalemeat, fishPos));
-            //Game1.BagList.Add(new Fish(18, "greenshimpmeat", _fish, greenshimpmeat, fishPos));
-            //Game1.BagList.Add(new Fish(19, "pinkfishmeat", dowfin, pinkfishmeat, fishPos));
-            //Game1.BagList.Add(new Fish(20, "sharkmeat", shark, sharkmeat, fishPos));
-            //Game1.BagList.Add(new Fish(21, "shimpmeat", _fish, greenshimpmeat, fishPos));
-            //Game1.BagList.Add(new Fish(22, "unimeat", shimai, unimeat, fishPos));
-            //Game1.BagList.Add(new Fish(22, "shimai", shimai, shimai, fishPos));
-            //Game1.BagList.Add(new Fish(22, "octopus", octopus, octopus, fishPos));
+            //Collecting
+
 
 
             var viewportadapter = new BoxingViewportAdapter(game.Window, game.GraphicsDevice, 800, 450);
@@ -306,7 +300,7 @@ namespace LET_HIM_COOK.Screen
             }
             foreach (Enemy enemy in Game1.enemyList)
             {
-                for (int i = 0; i < Game1.enemyList.Count; i++)
+                for (int i = 3; i < Game1.enemyList.Count; i++)
                 {
                     Game1.enemyList[i].Draw(_spriteBatch);
                 }

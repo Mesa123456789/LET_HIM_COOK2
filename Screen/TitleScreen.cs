@@ -48,6 +48,7 @@ namespace LET_HIM_COOK.Screen
                 if (ms.LeftButton == ButtonState.Pressed && !showSetting)
                 {
                     ScreenEvent.Invoke(game.GameplayScreen, new EventArgs());
+                    game._cameraPosition =new  Vector2(400, 225);
                     return;
                 }
             }

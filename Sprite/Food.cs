@@ -20,19 +20,19 @@ namespace LET_HIM_COOK.Sprite
         public Vector2 foodPosition;
         public RectangleF foodBox;
         public Rectangle foodRec;
-        public Texture2D foodTexture, foodTexBag2;
+        public Texture2D foodTexture, foodTexBag2, foodTexture2;
         public Texture2D foodTexBag;
         public int getFood;
         public static bool OntableAble;
-        public Player player;
         Game1 game;
         public RectangleF Bounds;
         AnimatedTexture SpriteTexture;
         Vector2 playerPos;
         public string name;
         public bool istrue;
-        public bool Two;
+        public bool Two, cursor;
         public int id;
+
         public Food(int id, string name, bool Istrue)
         {
             this.id = id;
@@ -51,6 +51,7 @@ namespace LET_HIM_COOK.Sprite
             this.foodTexBag = foodTexBag;
             this.foodPosition = foodPosition;
         }
+
         public Food(string name, Texture2D foodTexBag, Rectangle foodRec,bool Two)
         {
             this.name = name;
@@ -65,6 +66,18 @@ namespace LET_HIM_COOK.Sprite
             istrue = Istrue;
             this.foodPosition = foodPosition;
             this.foodRec = foodRec;
+            foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 32, 32);
+        }
+        public Food(string name, Texture2D foodTexture, Texture2D foodTexture2, Texture2D foodTexBag, Vector2 foodPosition, RectangleF foodBox, bool cursor)
+        {
+            this.name = name;
+            this.foodTexture = foodTexture;
+            this.foodTexture2 = foodTexture2;
+            this.foodTexBag = foodTexBag;
+            this.foodPosition = foodPosition;
+            this.foodBox = foodBox;
+            this.cursor = cursor;
+            foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 32, 32);
         }
         public Food(string name, Texture2D foodTexture, Texture2D foodTexBag, Vector2 foodPosition)
         {
@@ -74,26 +87,64 @@ namespace LET_HIM_COOK.Sprite
             this.foodPosition = foodPosition;
             foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 50, 50);
             OntableAble = false;
-            player = new Player(SpriteTexture, new Vector2(1500, 400), game, Bounds);
+            
         }
+        bool oncursor;
 
-
-        public override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime, Player player,GameplayScreen gameplay)
         {
             MouseState ms = Mouse.GetState();
-            if (foodBox.Intersects(GameplayScreen.player.Bounds) && !OntableAble)
+            Rectangle MouseRec = new Rectangle(ms.X,ms.Y,32,32);
+            if (foodBox.Intersects(player.Bounds) && ms.LeftButton == ButtonState.Pressed)
             {
-                if (ms.LeftButton == ButtonState.Pressed)
-                {
-                    OnCollision();
-                }
+                Console.WriteLine("intersect");
+                OnCollision();
             }
-            foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 50, 50);
+            if (foodBox.Intersects(gameplay.mouseCheck))
+            {
+                oncursor = true;
+            }
+            else
+            {
+                oncursor = false;
+            }
+            foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y,32,32);
         }
 
+        //public void Update(GameTime gameTime, Player player, CandyScreen gameplay)
+        //{
+        //    MouseState ms = Mouse.GetState();
+        //    Rectangle MouseRec = new Rectangle(ms.X, ms.Y, 32, 32);
+        //    if (foodBox.Intersects(player.Bounds) && ms.LeftButton == ButtonState.Pressed)
+        //    {
+        //        Console.WriteLine("intersect");
+        //        OnCollision();
+        //    }
+
+        //    foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 32, 32);
+        //}
+
+        //public void Update(GameTime gameTime, Player player, SeaScreen gameplay)
+        //{
+        //    MouseState ms = Mouse.GetState();
+        //    Rectangle MouseRec = new Rectangle(ms.X, ms.Y, 32, 32);
+        //    if (foodBox.Intersects(player.Bounds) && ms.LeftButton == ButtonState.Pressed)
+        //    {
+        //        Console.WriteLine("intersect");
+        //        OnCollision();
+        //    }
+
+        //    foodBox = new RectangleF((int)foodPosition.X, (int)foodPosition.Y, 32, 32);
+        //}
         public override void Draw(SpriteBatch _spriteBatch)
         {
             _spriteBatch.Draw(foodTexture, foodPosition, Color.White);
+            //_spriteBatch.DrawRectangle((RectangleF)foodBox, Color.Purple, 3f);
+            if (oncursor)
+            {
+                _spriteBatch.Draw(foodTexture2, foodPosition, Color.White);
+                //_spriteBatch.DrawRectangle((RectangleF)foodBox, Color.Purple, 3f);
+            }
         }
         public override void DrawBag(SpriteBatch _spriteBatch)
         {
@@ -101,7 +152,7 @@ namespace LET_HIM_COOK.Sprite
         }
         public virtual void OnCollision()
         {
-            OntableAble = true;
+            //OntableAble = true;
             Game1.BagList.Add(this);
             Game1.IsPopUp = true;
             foreach (Food food in Game1.foodList)

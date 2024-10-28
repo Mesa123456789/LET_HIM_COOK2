@@ -89,8 +89,13 @@ namespace LET_HIM_COOK
         {
             spriteBatch.Draw(enemytex, Bounds.Position, new Rectangle(32 * frame, 0, 32, 32), color, 0.0f, Vector2.Zero, 2.0f, SpriteEffects.FlipHorizontally, 0.0f);
             spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Purple, 3f);
-
         }
+        public void Draww(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Draw(enemytex, Bounds.Position, new Rectangle(80 * frame, 0, 32, 32), color, 0.0f, Vector2.Zero, 2.0f, SpriteEffects.FlipHorizontally, 0.0f);
+            spriteBatch.DrawRectangle((RectangleF)Bounds, Color.Purple, 3f);
+        }
+
         public override void OnCollision(CollisionEventArgs collisionInfo)
         {
             if (collisionInfo.Other.ToString().Contains("WallEntity"))

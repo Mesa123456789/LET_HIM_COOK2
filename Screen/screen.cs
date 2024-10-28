@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MonoGame.Extended;
+using LET_HIM_COOK.Sprite;
 
 namespace LET_HIM_COOK.Screen
 {
@@ -14,6 +15,8 @@ namespace LET_HIM_COOK.Screen
         public OrthographicCamera _camera;
         public Vector2 _cameraPosition;
         public Vector2 _bgPosition;
+        Food food;
+        public List<Food> foodList = new();
         protected EventHandler ScreenEvent; public screen(EventHandler theScreenEvent)
         {
             ScreenEvent = theScreenEvent;

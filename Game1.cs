@@ -44,8 +44,8 @@ namespace LET_HIM_COOK
         public RectangleF questboxRec;
         public RectangleF bagRec;
         public Texture2D bag,ok;
-        Texture2D interact , craft, hippomeat;
-        Texture2D ayinomoto, chili, oil, milk, salt2, sauce2, rice, sugar, seafood,suki,bin;
+        Texture2D interact , craft, hippomeat, hippo, lemon;
+        Texture2D ayinomoto, chili, oil, milk, salt2, sauce2, rice, sugar, seafood,suki,bin, coriander;
         bool Istrue;
         public static List<Food> BagList = new List<Food>();
         public static List<Food> foodList = new();
@@ -62,8 +62,10 @@ namespace LET_HIM_COOK
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            
             _graphics.PreferredBackBufferWidth = 800;
             _graphics.PreferredBackBufferHeight = 450;
+            //_graphics.ToggleFullScreen();
             _graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -76,6 +78,7 @@ namespace LET_HIM_COOK
         protected override void Initialize()
         {
             GotMenu = false;
+            havQ = false;
             base.Initialize();
         }
         public static int currentHeart;
@@ -86,6 +89,7 @@ namespace LET_HIM_COOK
             SpriteTexture.Load(Content, "PlayerIdel", 5, 4, 5);
 
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+            lemon = Content.Load<Texture2D>("ingre/lemon");
             bin = Content.Load<Texture2D>("bin");
             ui = Content.Load<Texture2D>("ui");
             uiHeart = Content.Load<Texture2D>("uiHeart");
@@ -110,8 +114,10 @@ namespace LET_HIM_COOK
             suki = Content.Load<Texture2D>("ingre/suki");
             seafood = Content.Load<Texture2D>("ingre/seafood");
             ok = Content.Load<Texture2D>("button");
+            coriander = Content.Load<Texture2D>("ingre/coriander");
             //**
             hippomeat = Content.Load<Texture2D>("ingre/hippomeat");
+            hippo = Content.Load<Texture2D>("hippo");
             //**
             inventBox.Add(new Vector2(161, 250));
             inventBox.Add(new Vector2(161 + 52, 250));
@@ -159,9 +165,10 @@ namespace LET_HIM_COOK
             seasoningList.Add(new Food("ayinomoto", ayinomoto, false, new Vector2(271, 195), new Rectangle(271, 183, 32, 32)));
             seasoningList.Add(new Food("chili", chili, false, new Vector2(271 + 52, 183), new Rectangle(271 + 52 , 183, 32, 32)));
             seasoningList.Add(new Food("oil", oil, false, new Vector2(271 + (52 * 2), 183), new Rectangle(271 + (52*2), 183, 32, 32)));
+            seasoningList.Add(new Food("lemon", lemon, false, new Vector2(271 + (52 * 2), 183), new Rectangle(271 + (52 * 3), 183, 32, 32)));
             seasoningList.Add(new Food("salt2", salt2, false, new Vector2(271 + (52 * 4), 183), new Rectangle(271 + (52 * 4), 183, 32, 32)));
             seasoningList.Add(new Food("sauce2", sauce2, false, new Vector2(271, 237), new Rectangle(271, 237, 32, 32)));
-            seasoningList.Add(new Food("rice", rice, false, new Vector2(271 + 52, 237), new Rectangle(271 + 52, 237, 32, 32)));
+            seasoningList.Add(new Food("coriander", coriander, false, new Vector2(271 + 52, 237), new Rectangle(271 + 52, 237, 32, 32)));
             seasoningList.Add(new Food("sugar", sugar, false, new Vector2(271 + (52 * 2)), new Rectangle(271 + (52 * 2), 237, 32, 32)));
             seasoningList.Add(new Food("suki", suki, false, new Vector2(271 + (52 * 3)), new Rectangle(271 + (52 * 3), 237, 32, 32)));
             seasoningList.Add(new Food("seafood", seafood, false, new Vector2(271 + (52 * 4)), new Rectangle(271 + (52 * 4), 237, 32, 32)));
@@ -175,13 +182,16 @@ namespace LET_HIM_COOK
             //BagList.Add(new Food("sauce2", sauce2, false, new Vector2(271, 237), new Rectangle(271, 237, 32, 32)));
             //BagList.Add(new Food("rice", rice, false, new Vector2(271 + 52, 237), new Rectangle(271 + 52, 237, 32, 32)));
             //BagList.Add(new Food("sugar", sugar, false, new Vector2(271 + (52 * 2)), new Rectangle(271 + (52 * 2), 237, 32, 32)));
+  
+
 
             ///***///
             TitleScreen = new TitleScreen(this, new EventHandler(GameplayScreenEvent));
             RestauarntScreen = new RestauarntScreen(this, new EventHandler(GameplayScreenEvent));
+            GameplayScreen = new GameplayScreen(this, new EventHandler(GameplayScreenEvent));
             CandyScreen = new CandyScreen(this, new EventHandler(GameplayScreenEvent));
             SeaScreen = new SeaScreen(this, new EventHandler(GameplayScreenEvent));
-            GameplayScreen = new GameplayScreen(this, new EventHandler(GameplayScreenEvent));
+            
             mCurrentScreen = TitleScreen;
             currentHeart = CandyScreen.uiHeart.Width - 10;
         }
@@ -255,6 +265,7 @@ namespace LET_HIM_COOK
         bool xBoxFrideCursor;
         int rotationMenuBG;
         public static bool finsihcraft;
+        public static bool havQ;
         public void UpdateUIRest(Player player , GameTime gameTime)
         {
             MouseState ms = Mouse.GetState();
@@ -352,6 +363,10 @@ namespace LET_HIM_COOK
             questboxRec = new Rectangle(750, 150, 25, 20);//680, 30
             xBox = new Rectangle(650, 75, 30, 30);
             XboxQ = new Rectangle(680, 30, 30, 30);
+            Rectangle qBox1 = new Rectangle(152, 144, 145, 180);
+            Rectangle qBox2 = new Rectangle(326, 144, 145, 180);
+            Rectangle qBox3 = new Rectangle(511, 144, 145, 180);
+
             if (mouseRec.Intersects(bookRec) && ms.LeftButton == ButtonState.Pressed)
             {
                 closeXBoxQuest = false;
@@ -448,15 +463,71 @@ namespace LET_HIM_COOK
                     }
                     
                 }
-            }
-            if(openBin == true)
+            }  
+            if (mouseRec.Intersects(qBox1))
             {
-                bincursor = true;
+                cursorQuest = true;
+            }
+            else
+            {
+                cursorQuest = false;
+            }
+            if (mouseRec.Intersects(qBox2))
+            {
+                cursorQuest2 = true;
+            }
+            else
+            {
+                cursorQuest2 = false;
+            }
+            if (mouseRec.Intersects(qBox3))
+            {
+                cursorQuest3 = true;
+            }
+            else
+            {
+                cursorQuest3 = false;
+            }
+            if (GameplayScreen.openQuest == true)
+            {
+                RestauarntScreen.QuestList[GameplayScreen.getQuest].QuestRec = qBox1;
+                RestauarntScreen.QuestList[GameplayScreen.getQuest2].QuestRec = qBox2;
+                RestauarntScreen.QuestList[GameplayScreen.getQuest3].QuestRec = qBox3;
+                count++;
+                if (count > 20 && havQ == false)
+                {
+                    Select = true;
+                    Console.WriteLine(havQ);
+                }
+            }
+            else
+            {
+                count = 0;
+                Select = false;
+            }
+            if (!havQ)
+            {
+                for (int i = 0; i < RestauarntScreen.QuestList.Count; i++)
+                {
+                    if (mouseRec.Intersects(RestauarntScreen.QuestList[i].QuestRec) && ms.LeftButton == ButtonState.Released && msPre.LeftButton == ButtonState.Pressed && Select == true)
+                    {
+                        RestauarntScreen.QuestList[i].Menuname = true;
+                        bool[] menu = new bool[27];
+                        menu[i] = RestauarntScreen.QuestList[i].Menuname;
+                        GameplayScreen.Oncraft(menu[i], i);
+                        Selected = true;
+                        Console.WriteLine(RestauarntScreen.QuestList[i].Menuname + "" + i);
+                        havQ = true;
+                    }
+                }
             }
             msPre = ms;
-
             UpdateFream((float)gameTime.ElapsedGameTime.TotalSeconds);
         }
+        public static bool Menu1;
+        int count;
+        public static bool Select,Selected;
+        bool cursorQuest, cursorQuest2, cursorQuest3;
         bool openBin, click;
         bool throwbin;
         bool bincursor;
@@ -469,7 +540,6 @@ namespace LET_HIM_COOK
         bool openQuestUI = false;
         public static bool openFridgeUI = false;
         int mouse_state = 1;
-        /// <summary>
   
         public void DrawUiGameplay(SpriteBatch _spriteBatch)
         {
@@ -494,9 +564,28 @@ namespace LET_HIM_COOK
                     CountTime(1000);
                 }
             }
+
             if (GameplayScreen.openQuest)
             {
                 _spriteBatch.Draw(QuestUI, new Vector2(0, 0), new Rectangle(0, 0, 700, 400), Color.White);
+                for(int i = 0; i < RestauarntScreen.QuestList.Count; i++)
+                {
+                    _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest].quest1, new Vector2(161 - 9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    if (cursorQuest)
+                    {
+                        _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest].quest2, new Vector2(161 - 9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    }
+                    _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest2].quest1, new Vector2(336-9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    if (cursorQuest2)
+                    {
+                        _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest2].quest2, new Vector2(336 - 9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    }
+                    _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest3].quest1, new Vector2(511 - 9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    if (cursorQuest3)
+                    {
+                        _spriteBatch.Draw(RestauarntScreen.QuestList[GameplayScreen.getQuest3].quest2, new Vector2(511 - 9, 144), new Rectangle(0, 0, 145, 180), Color.White);
+                    }
+                }
                 if (closeXBox == false)
                 {
                     _spriteBatch.Draw(QuestUI, new Vector2(655, 35), new Rectangle(745 + 64, 81, 64, 40), Color.White);
